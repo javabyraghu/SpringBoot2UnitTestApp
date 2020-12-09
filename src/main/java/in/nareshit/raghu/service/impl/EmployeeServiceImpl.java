@@ -31,13 +31,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		return repo.findById(id).orElseThrow(
 				()->new EmployeeNotFoundException("Employee not exist")
 				);
-		/*Optional<Employee> opt =  repo.findById(id);
-		if(opt.isPresent()) 
-			return opt.get();
-		else
-			throw new EmployeeNotFoundException("Employee not exist");
-		 */
+	}
 
+	@Override
+	public void deleteEmployee(Integer id) {
+		Employee e = getOneEmployee(id);
+		repo.delete(e);
 	}
 
 }

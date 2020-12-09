@@ -27,6 +27,7 @@ public class TestEmployeeRestController {
 	private MockMvc mockMvc;
 
 	@Test
+	@Disabled
 	public void testSaveEmployee() throws Exception {
 		//1. create Dummy Request
 		MockHttpServletRequestBuilder request =
@@ -52,6 +53,7 @@ public class TestEmployeeRestController {
 
 
 	@Test
+	@Disabled
 	public void testGetAllEmployee() throws Exception {
 		//1. create Dummy Request
 		MockHttpServletRequestBuilder request = 
@@ -74,6 +76,7 @@ public class TestEmployeeRestController {
 	}
 
 	@Test
+	@Disabled
 	public void testGetOneEmployeeExist() throws Exception {
 		//1. create Dummy Request
 		MockHttpServletRequestBuilder request =
@@ -96,6 +99,7 @@ public class TestEmployeeRestController {
 	}
 
 	@Test
+	@Disabled
 	public void testGetOneEmployeeNotExist() throws Exception {
 		//1. create Dummy Request
 		MockHttpServletRequestBuilder request =
@@ -115,5 +119,61 @@ public class TestEmployeeRestController {
 		}
 	}
 
-
+	@Test
+	@Disabled
+	public void testDeleteEmployee() throws Exception {
+		//1. create Dummy Request
+		MockHttpServletRequestBuilder request =
+		MockMvcRequestBuilders.delete("/employee/remove/1");
+		
+		//2. execute request and get result
+		MvcResult result = mockMvc.perform(request).andReturn();
+		
+		//3. Read Response
+		MockHttpServletResponse response = result.getResponse();
+		
+		//4. Test using assert Method --status-200
+		assertEquals(HttpStatus.OK.value(), response.getStatus());
+		assertEquals("Employee Deleted!!", response.getContentAsString());
+	}
+	
+	@Test
+	@Disabled
+	public void testDeleteEmployeeNotExist() throws Exception {
+		//1. create Dummy Request
+		MockHttpServletRequestBuilder request =
+				MockMvcRequestBuilders.delete("/employee/remove/300");
+		
+		//2. execute request and get result
+		MvcResult result = mockMvc.perform(request).andReturn();
+		
+		//3. Read Response
+		MockHttpServletResponse response = result.getResponse();
+		
+		//4. Test using assert Method -404
+		assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
+		assertEquals("Employee not exist", response.getContentAsString());
+	}
+	
+	@Test
+	public void testupdateEmployee() throws Exception {
+		//1. create Dummy Request
+		MockHttpServletRequestBuilder request =
+		MockMvcRequestBuilders
+		.put("/employee/modify/59")
+		.contentType(MediaType.APPLICATION_JSON)
+		.content("{\"empName\":\"SAM SA\",\"empSal\":6500.0}");
+		
+		//2. execute request and get result
+		MvcResult result = mockMvc.perform(request).andReturn();
+		
+		//3. Read Response
+		MockHttpServletResponse response = result.getResponse();
+		
+		//4. Test using assert Method --status-200
+		assertEquals(HttpStatus.OK.value(), response.getStatus());
+		assertEquals("Employee Updated", response.getContentAsString());
+	}
+	
+	
 }

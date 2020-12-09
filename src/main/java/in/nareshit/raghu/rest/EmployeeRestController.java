@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,5 +45,29 @@ public class EmployeeRestController {
 		Employee e = service.getOneEmployee(id);
 		return ResponseEntity.ok(e);
 	}
+	
+	@DeleteMapping("/remove/{id}")
+	public ResponseEntity<String> deleteEmployee(
+			@PathVariable Integer id
+			)
+	{
+		service.deleteEmployee(id);
+		return ResponseEntity.ok("Employee Deleted!!");
+	}
+	
+	@PutMapping("/modify/{id}")
+	public ResponseEntity<String> updateEmployee(
+			@PathVariable Integer id,
+			@RequestBody Employee employee
+			) 
+	{
+		Employee db = service.getOneEmployee(id);
+		db.setEmpName(employee.getEmpName());
+		db.setEmpSal(employee.getEmpSal());
+		service.saveEmployee(db);
+		
+		return ResponseEntity.ok("Employee Updated");
+	}
+	
 	
 }
